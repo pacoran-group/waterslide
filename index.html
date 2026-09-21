@@ -59,19 +59,23 @@
     #top-nav {
       position: fixed; top: 3px; left: 0; right: 0; z-index: 150;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 28px;
+      padding: 10px 24px;
+      background: rgba(6,15,8,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .nav-logos { display: flex; align-items: center; gap: 12px; }
-    .nav-logo-pg { height: 28px; width: auto; object-fit: contain; }
-    .nav-logo-wp { height: 30px; width: auto; background: #fff; padding: 2px 7px; border-radius: 5px; }
+    .nav-logo-pg { height: 26px; width: auto; object-fit: contain; }
+    .nav-logo-wp { height: 28px; width: auto; background: #fff; padding: 2px 7px; border-radius: 5px; }
     .nav-wa {
       display: flex; align-items: center; gap: 7px;
-      background: rgba(255,255,255,0.09); border: 1px solid var(--border-hi);
-      color: var(--text); font-size: 0.78rem; font-weight: 600;
-      padding: 6px 15px; border-radius: 30px; text-decoration: none;
+      background: rgba(52,168,83,0.18); border: 1px solid rgba(52,168,83,0.45);
+      color: #fff; font-size: 0.78rem; font-weight: 700;
+      padding: 6px 14px; border-radius: 30px; text-decoration: none;
       transition: background 0.2s;
     }
-    .nav-wa:hover { background: rgba(255,255,255,0.17); }
+    .nav-wa:hover { background: rgba(52,168,83,0.32); }
 
     /* ═══════════════════════════════════════════
        SLIDE SYSTEM
@@ -83,9 +87,11 @@
 
     .slide {
       position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      padding: 68px 24px 86px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      padding: 76px 20px 96px;
       overflow-y: auto; overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
       transition: transform 0.52s cubic-bezier(0.16,1,0.3,1),
                   opacity  0.52s cubic-bezier(0.16,1,0.3,1);
       pointer-events: none;
@@ -93,6 +99,13 @@
     .slide.state-below  { transform: translateY(72px);  opacity: 0; }
     .slide.state-active { transform: translateY(0);     opacity: 1; pointer-events: all; }
     .slide.state-above  { transform: translateY(-72px); opacity: 0; }
+
+    /* Centered on desktop, scrollable from top on mobile */
+    @media (min-height: 700px) {
+      .slide:not(#slide-6):not(#slide-7):not(#slide-8) {
+        justify-content: center;
+      }
+    }
 
     /* inner content width */
     .slide-inner { width: 100%; max-width: 640px; }
@@ -477,11 +490,44 @@
     .g-err.show { display: block; }
 
     /* ═══════════════════════════════════════════
-       RESPONSIVE TWEAKS
+       RESPONSIVE TWEAKS (MOBILE FOCUS)
     ═══════════════════════════════════════════ */
-    @media (max-width: 480px) {
-      #top-nav { padding: 10px 16px; }
-      .slide    { padding: 68px 16px 86px; }
+    @media (max-width: 600px) {
+      #top-nav { padding: 8px 14px; }
+      .nav-logo-pg { height: 22px; }
+      .nav-logo-wp { height: 24px; padding: 2px 5px; }
+      .nav-wa { font-size: 0.72rem; padding: 5px 11px; }
+
+      .slide {
+        padding: 72px 14px 90px;
+        justify-content: flex-start !important;
+      }
+      .slide-inner, .slide-inner-wide { width: 100%; }
+
+      .q-title { font-size: 1.4rem; }
+      .q-sub { font-size: 0.82rem; margin-bottom: 18px; }
+
+      /* Category card compact mobile */
+      .category-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .cat-card {
+        padding: 14px 14px 12px;
+        border-radius: 14px;
+      }
+      .cat-card .cat-key { display: none; } /* Hide number key badges on touch devices */
+      .cat-name { font-size: 0.98rem; }
+      .cat-price { font-size: 1.25rem; margin-bottom: 6px; }
+      .cat-perks { font-size: 0.72rem; line-height: 1.6; padding-top: 6px; }
+      .cat-perks li { margin-bottom: 2px; }
+
+      /* Inputs */
+      .tf-input { font-size: 1.05rem; }
+      .ok-btn { width: 100%; justify-content: center; padding: 13px 18px; }
+      .ok-btn .enter-key { display: none; }
+
+      /* Bottom Nav */
       #bottom-nav { padding: 10px 16px 14px; }
       .hero-title { font-size: 2.1rem; }
     }
@@ -502,7 +548,7 @@
     <img src="logo_psf.png"      alt="Pancoran Group"    class="nav-logo-pg" />
     <img src="logo_waterpark.png" alt="Pancoran Waterpark" class="nav-logo-wp" />
   </div>
-  <a href="https://wa.me/628133278031?text=Halo%20Panitia%20PSF%202026"
+  <a href="https://wa.me/628133728031?text=Halo%20Panitia%20PSF%202026"
      target="_blank" class="nav-wa">💬 Helpdesk WA</a>
 </nav>
 
@@ -845,9 +891,9 @@
         <div class="pay-card">
           <div class="pay-card-lbl">🏦 Transfer Bank</div>
           <div class="pay-card-bank">Bank BCA</div>
-          <div class="pay-card-num">0828 9212 1120</div>
-          <div class="pay-card-name">a.n. Panitia Pancoran Slide Festival</div>
-          <button type="button" class="copy-btn" id="bca-copy-btn" onclick="copyBCA('082892121120')">
+          <div class="pay-card-num">2646 677 677</div>
+          <div class="pay-card-name">a.n. Srono Perkasa Sejahtera</div>
+          <button type="button" class="copy-btn" id="bca-copy-btn" onclick="copyBCA('2646677677')">
             📋 Salin Nomor
           </button>
         </div>
@@ -932,9 +978,17 @@
       <p class="success-desc">
         Terima kasih, <strong id="success-name">Sahabat Pancoran</strong>!<br />
         Data dan bukti pembayaran Anda telah kami terima.<br />
-        Tim panitia akan memverifikasi dan menghubungi Anda via WhatsApp.
+        Tim panitia akan memverifikasi dan menghubungi Anda via WhatsApp.<br />
+        Ada pertanyaan? Hubungi Contact Person: <strong>0813 3728 031</strong>
       </p>
-      <button class="success-restart" onclick="location.reload()">Daftarkan Peserta Lain</button>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+        <a href="https://wa.me/628133728031?text=Halo%20Panitia%20PSF%202026%2C%20saya%20sudah%20mengisi%20form%20pendaftaran"
+           target="_blank"
+           style="background:rgba(52,168,83,0.18);border:1px solid rgba(52,168,83,0.5);color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700;font-size:0.88rem;display:inline-flex;align-items:center;gap:6px;">
+          💬 Konfirmasi via WhatsApp
+        </a>
+        <button class="success-restart" onclick="location.reload()">Daftarkan Peserta Lain</button>
+      </div>
     </div>
   </div>
 

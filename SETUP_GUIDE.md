@@ -1,4 +1,4 @@
-﻿# 🏄 Panduan Setup — Pancoran Slide Festival 2026
+# 🏄 Panduan Setup — Pancoran Slide Festival 2026
 
 ## File yang Ada
 | File | Fungsi |
@@ -92,7 +92,7 @@ Ganti dengan:
 ---
 
 ## Catatan Penting
-- File upload maks. **5 MB** (bisa diubah di script jika perlu)
+- File upload maks. **5 MB**
 - Format yang diterima: **JPG, PNG, PDF**
-- T&C otomatis muncul saat pilih: Slide Challenge, Extreme Running, atau Extreme Running Lengkap
-- Nomor WA info: **0813 3278 031**
+- Rekening Pembayaran: **Bank BCA 2646 677 677 a.n. Srono Perkasa Sejahtera**
+- Nomor WA Contact Person Konfirmasi: **0813 3728 031**
