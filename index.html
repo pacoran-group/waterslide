@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pancoran Slide Festival 2026 – Pendaftaran Resmi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════
+       RESET & TOKENS
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #060f08;
+      --bg2:         #0c1a0e;
+      --green:       #34a853;
+      --green-dk:    #1a6b30;
+      --green-glow:  rgba(52,168,83,0.18);
+      --gold:        #f59e0b;
+      --gold-lt:     #fef08a;
+      --text:        #ffffff;
+      --muted:       rgba(255,255,255,0.55);
+      --hint:        rgba(255,255,255,0.3);
+      --border:      rgba(255,255,255,0.1);
+      --border-hi:   rgba(255,255,255,0.22);
+      --red:         #f87171;
+      --r:           12px;
+      --r-lg:        20px;
+    }
+
+    html, body {
+      height: 100%; overflow: hidden;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══════════════════════════════════════════
+       PROGRESS BAR
+    ═══════════════════════════════════════════ */
+    #progress-wrap {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 3px; background: rgba(255,255,255,0.07); z-index: 200;
+    }
+    #progress-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--green), var(--gold));
+      transition: width 0.55s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 0 14px rgba(52,168,83,0.55);
+    }
+
+    /* ═══════════════════════════════════════════
+       TOP NAVBAR
+    ═══════════════════════════════════════════ */
+    #top-nav {
+      position: fixed; top: 3px; left: 0; right: 0; z-index: 150;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 28px;
+    }
+    .nav-logos { display: flex; align-items: center; gap: 12px; }
+    .nav-logo-pg { height: 28px; width: auto; object-fit: contain; }
+    .nav-logo-wp { height: 30px; width: auto; background: #fff; padding: 2px 7px; border-radius: 5px; }
+    .nav-wa {
+      display: flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,0.09); border: 1px solid var(--border-hi);
+      color: var(--text); font-size: 0.78rem; font-weight: 600;
+      padding: 6px 15px; border-radius: 30px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-wa:hover { background: rgba(255,255,255,0.17); }
+
+    /* ═══════════════════════════════════════════
+       SLIDE SYSTEM
+    ═══════════════════════════════════════════ */
+    #slide-container {
+      position: fixed; inset: 0;
+      pointer-events: none; /* child slides get their own pointer-events */
+    }
+
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 68px 24px 86px;
+      overflow-y: auto; overflow-x: hidden;
+      transition: transform 0.52s cubic-bezier(0.16,1,0.3,1),
+                  opacity  0.52s cubic-bezier(0.16,1,0.3,1);
+      pointer-events: none;
+    }
+    .slide.state-below  { transform: translateY(72px);  opacity: 0; }
+    .slide.state-active { transform: translateY(0);     opacity: 1; pointer-events: all; }
+    .slide.state-above  { transform: translateY(-72px); opacity: 0; }
+
+    /* inner content width */
+    .slide-inner { width: 100%; max-width: 640px; }
+    .slide-inner-wide { width: 100%; max-width: 780px; }
+
+    /* ── Question label ── */
+    .q-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.72rem; font-weight: 800; color: var(--green);
+      text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 12px;
+    }
+    .q-bubble {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--green); color: #fff;
+      font-size: 0.7rem; font-weight: 900;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Question text ── */
+    .q-title {
+      font-size: clamp(1.55rem, 4vw, 2.1rem);
+      font-weight: 800; line-height: 1.2; letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .q-sub {
+      font-size: 0.88rem; color: var(--muted);
+      line-height: 1.6; margin-bottom: 26px;
+    }
+
+    /* ═══════════════════════════════════════════
+       TYPEFORM-STYLE UNDERLINE INPUT
+    ═══════════════════════════════════════════ */
+    .tf-input {
+      width: 100%; background: transparent;
+      border: none; border-bottom: 2px solid var(--border-hi);
+      color: var(--text); font-family: inherit;
+      font-size: 1.2rem; font-weight: 500;
+      padding: 8px 0 10px; outline: none;
+      transition: border-color 0.22s;
+    }
+    .tf-input::placeholder { color: var(--hint); }
+    .tf-input:focus        { border-bottom-color: var(--green); }
+    .tf-input.err          { border-bottom-color: var(--red); }
+
+    .tf-hint { font-size: 0.75rem; color: var(--hint); margin-top: 6px; }
+    .tf-err  { font-size: 0.75rem; color: var(--red); font-weight: 600; margin-top: 6px; display: none; }
+    .tf-err.show { display: block; }
+
+    /* field group spacing */
+    .field-group { margin-bottom: 22px; }
+    .field-label {
+      display: block; font-size: 0.72rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      color: var(--green); margin-bottom: 6px;
+    }
+    .field-label-muted { color: var(--muted); }
+
+    /* ── OK button ── */
+    .ok-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--green); color: #fff; border: none;
+      border-radius: 8px; font-family: inherit;
+      font-size: 0.9rem; font-weight: 800;
+      padding: 12px 22px; cursor: pointer; margin-top: 22px;
+      transition: background 0.18s, transform 0.15s;
+    }
+    .ok-btn:hover { background: #2c9646; transform: translateY(-1px); }
+    .ok-btn .enter-key {
+      font-size: 0.72rem; opacity: 0.65;
+      background: rgba(0,0,0,0.2); padding: 2px 7px; border-radius: 4px;
+    }
+
+    /* ═══════════════════════════════════════════
+       GENDER PICKER
+    ═══════════════════════════════════════════ */
+    .gender-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 420px) { .gender-grid { grid-template-columns: 1fr; } }
+
+    .gender-card {
+      position: relative; display: flex; align-items: center; gap: 14px;
+      border: 2px solid var(--border-hi); border-radius: var(--r-lg);
+      padding: 18px 18px; cursor: pointer;
+      font-weight: 700; font-size: 1rem; color: var(--muted);
+      transition: all 0.2s;
+    }
+    .gender-card input { display: none; }
+    .gender-card .gc-key {
+      position: absolute; top: 10px; right: 12px;
+      font-size: 0.62rem; font-weight: 700; color: var(--hint);
+      background: rgba(255,255,255,0.06); border-radius: 4px; padding: 1px 5px;
+    }
+    .gender-card .gc-emoji { font-size: 1.7rem; }
+    .gender-card:hover { border-color: var(--green); background: var(--green-glow); color: var(--text); }
+    .gender-card.chosen { border-color: var(--green); background: var(--green-glow); color: var(--text); box-shadow: 0 0 0 1px var(--green); }
+    .gender-card.chosen .gc-key { background: var(--green); color: #fff; }
+
+    /* ═══════════════════════════════════════════
+       KATEGORI LOMBA — MAIN SECTION
+       (slide-6: full-width grid 2×2)
+    ═══════════════════════════════════════════ */
+    .category-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 560px) { .category-grid { grid-template-columns: 1fr; } }
+
+    .cat-card {
+      position: relative;
+      border: 2px solid var(--border-hi);
+      border-radius: var(--r-lg);
+      padding: 20px 18px 18px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.025);
+      transition: border-color 0.22s, background 0.22s, transform 0.18s, box-shadow 0.22s;
+      display: flex; flex-direction: column;
+    }
+    .cat-card input { display: none; }
+    .cat-card .cat-key {
+      position: absolute; top: 14px; right: 14px;
+      font-size: 0.65rem; font-weight: 800; color: var(--hint);
+      background: rgba(255,255,255,0.07); border-radius: 5px; padding: 2px 7px;
+    }
+    .cat-card:hover {
+      border-color: var(--green);
+      background: var(--green-glow);
+      transform: translateY(-3px);
+    }
+    .cat-card.chosen {
+      border-color: var(--green);
+      background: rgba(52,168,83,0.14);
+      box-shadow: 0 0 0 1px var(--green), 0 10px 28px rgba(52,168,83,0.22);
+      transform: translateY(-2px);
+    }
+    .cat-card.chosen .cat-key { background: var(--green); color: #fff; }
+
+    .cat-badge {
+      display: inline-block; font-size: 0.62rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; align-self: flex-start;
+    }
+    .cat-name  { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
+    .cat-price { font-size: 1.4rem; font-weight: 900; color: var(--green); margin-bottom: 10px; }
+    .cat-perks {
+      list-style: none; font-size: 0.76rem; color: var(--muted);
+      line-height: 1.75;
+      border-top: 1px solid var(--border);
+      padding-top: 10px; margin-top: auto;
+    }
+    .cat-perks li::before { content: '✓ '; color: var(--green); font-weight: 800; }
+
+    /* selected tick overlay */
+    .cat-check {
+      display: none; position: absolute; top: 12px; left: 14px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--green); color: #fff;
+      font-size: 0.72rem; font-weight: 900;
+      align-items: center; justify-content: center;
+    }
+    .cat-card.chosen .cat-check { display: flex; }
+    .cat-card.chosen .cat-key   { right: 14px; }
+
+    /* ═══════════════════════════════════════════
+       SAFETY WAIVER
+    ═══════════════════════════════════════════ */
+    .waiver-alert {
+      display: flex; gap: 10px; align-items: flex-start;
+      background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.35);
+      border-radius: var(--r); padding: 12px 15px;
+      font-size: 0.82rem; color: #fde68a; line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .waiver-scroll {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border-hi);
+      border-radius: var(--r); padding: 16px 18px;
+      font-size: 0.8rem; color: var(--muted); line-height: 1.75;
+      max-height: 280px; overflow-y: auto; margin-bottom: 16px;
+    }
+    .waiver-scroll h4 { color: #fff; font-size: 0.88rem; font-weight: 800; margin: 14px 0 6px; letter-spacing: 0.3px; }
+    .waiver-scroll h4:first-child { margin-top: 0; }
+    .waiver-scroll h5 { color: rgba(255,255,255,0.85); font-size: 0.82rem; margin: 8px 0 4px; }
+    .waiver-scroll ol, .waiver-scroll ul { padding-left: 20px; margin-bottom: 8px; }
+    .waiver-scroll li { margin-bottom: 4px; }
+    .waiver-scroll::-webkit-scrollbar { width: 5px; }
+    .waiver-scroll::-webkit-scrollbar-thumb { background: rgba(52,168,83,0.4); border-radius: 3px; }
+
+    .tf-check-row {
+      display: flex; gap: 12px; align-items: flex-start;
+      cursor: pointer; font-size: 0.88rem; color: var(--text); font-weight: 500;
+    }
+    .tf-check-row input { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; accent-color: var(--green); cursor: pointer; }
+
+    /* ═══════════════════════════════════════════
+       PAYMENT SLIDE
+    ═══════════════════════════════════════════ */
+    .pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    @media (max-width: 480px) { .pay-grid { grid-template-columns: 1fr; } }
+
+    .pay-card {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border-hi);
+      border-radius: var(--r); padding: 14px 16px;
+    }
+    .pay-card-lbl {
+      font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--green); margin-bottom: 6px;
+    }
+    .pay-card-bank { font-weight: 800; font-size: 0.88rem; margin-bottom: 4px; }
+    .pay-card-num  { font-family: monospace; font-size: 1.15rem; font-weight: 900; letter-spacing: 1px; margin-bottom: 3px; }
+    .pay-card-name { font-size: 0.72rem; color: var(--muted); }
+
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(52,168,83,0.14); border: 1px solid rgba(52,168,83,0.4);
+      color: var(--green); font-family: inherit;
+      font-size: 0.72rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 5px; cursor: pointer; margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .copy-btn:hover { background: rgba(52,168,83,0.28); }
+
+    .qris-placeholder {
+      width: 80px; height: 80px; flex-shrink: 0;
+      border: 2px dashed var(--border-hi); border-radius: 8px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 0.62rem; text-align: center; color: var(--hint); line-height: 1.5;
+    }
+
+    /* Dropzone */
+    .dropzone {
+      border: 2px dashed var(--border-hi); border-radius: var(--r);
+      padding: 24px 16px; text-align: center;
+      cursor: pointer; position: relative; transition: all 0.2s;
+    }
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--green); background: var(--green-glow);
+    }
+    .dropzone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0;
+      width: 100%; height: 100%; cursor: pointer;
+    }
+    .dz-icon { font-size: 2rem; margin-bottom: 6px; }
+    .dz-text { font-size: 0.88rem; font-weight: 700; color: rgba(255,255,255,0.65); }
+    .dz-sub  { font-size: 0.72rem; color: var(--hint); margin-top: 4px; }
+
+    /* ═══════════════════════════════════════════
+       REVIEW SLIDE
+    ═══════════════════════════════════════════ */
+    .review-box {
+      background: rgba(255,255,255,0.035); border: 1px solid var(--border-hi);
+      border-radius: var(--r-lg); padding: 20px; margin-bottom: 18px;
+    }
+    .rv-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.875rem; gap: 16px;
+    }
+    .rv-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .rv-lbl { color: var(--muted); flex-shrink: 0; }
+    .rv-val { font-weight: 700; text-align: right; word-break: break-word; }
+    .rv-total { font-size: 1.55rem; font-weight: 900; color: var(--green); }
+
+    .secure-note {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; color: var(--muted); margin-bottom: 18px;
+    }
+
+    /* ═══════════════════════════════════════════
+       SUCCESS SCREEN
+    ═══════════════════════════════════════════ */
+    .success-wrap { text-align: center; padding: 20px 10px; }
+    .success-emoji { font-size: 4rem; margin-bottom: 16px; }
+    .success-title { font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+    .success-desc  {
+      font-size: 0.9rem; color: var(--muted); line-height: 1.75;
+      max-width: 460px; margin: 0 auto 28px;
+    }
+    .success-restart {
+      background: var(--green); color: #fff; border: none;
+      border-radius: 8px; font-family: inherit;
+      font-size: 0.9rem; font-weight: 800;
+      padding: 12px 26px; cursor: pointer; transition: background 0.2s;
+    }
+    .success-restart:hover { background: #2c9646; }
+
+    /* ═══════════════════════════════════════════
+       HERO / INTRO SLIDE (SLIDE-0)
+    ═══════════════════════════════════════════ */
+    #slide-0 {
+      align-items: flex-end;
+      padding-bottom: 60px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('poster.jpg') center 22% / cover no-repeat;
+      filter: brightness(0.28) saturate(1.1); z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(
+        to top,
+        rgba(6,15,8,1) 0%,
+        rgba(6,15,8,0.82) 45%,
+        rgba(6,15,8,0.4) 100%
+      );
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      width: 100%; max-width: 640px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(245,158,11,0.14); border: 1px solid rgba(245,158,11,0.45);
+      color: var(--gold-lt); font-size: 0.72rem; font-weight: 800;
+      padding: 5px 15px; border-radius: 30px;
+      text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 18px;
+    }
+    .hero-title {
+      font-size: clamp(2.4rem, 7vw, 3.8rem);
+      font-weight: 800; line-height: 1.08; letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+    .hero-title em { color: var(--gold); font-style: normal; }
+    .hero-desc {
+      font-size: 1rem; color: rgba(255,255,255,0.68);
+      line-height: 1.65; margin-bottom: 24px; max-width: 500px;
+    }
+    .hero-pills {
+      display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 32px;
+    }
+    .hero-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.08); border: 1px solid var(--border-hi);
+      border-radius: 8px; padding: 8px 13px; font-size: 0.82rem;
+    }
+    .start-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--green); color: #fff; border: none;
+      border-radius: 10px; font-family: inherit;
+      font-size: 1rem; font-weight: 800;
+      padding: 15px 32px; cursor: pointer;
+      box-shadow: 0 4px 24px rgba(52,168,83,0.45);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .start-btn:hover {
+      background: #2c9646; transform: translateY(-2px);
+      box-shadow: 0 7px 30px rgba(52,168,83,0.55);
+    }
+    .start-arrow { font-size: 1.1rem; }
+
+    /* ═══════════════════════════════════════════
+       BOTTOM NAV BAR
+    ═══════════════════════════════════════════ */
+    #bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 150;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 28px 16px;
+      background: linear-gradient(to top, rgba(6,15,8,1) 0%, rgba(6,15,8,0.7) 100%);
+      backdrop-filter: blur(8px);
+      transition: opacity 0.3s;
+    }
+    #bottom-nav.hidden { opacity: 0; pointer-events: none; }
+
+    .nav-counter { font-size: 0.78rem; font-weight: 700; color: var(--muted); }
+    .nav-arrows  { display: flex; gap: 8px; }
+    .nav-arr {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1.5px solid var(--border-hi);
+      background: rgba(255,255,255,0.06); color: var(--text);
+      font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .nav-arr:hover:not(:disabled) { border-color: var(--green); background: var(--green-glow); }
+    .nav-arr:disabled { opacity: 0.22; cursor: not-allowed; }
+
+    /* ═══════════════════════════════════════════
+       GENERIC ERROR
+    ═══════════════════════════════════════════ */
+    .g-err { font-size: 0.75rem; color: var(--red); font-weight: 600; display: none; margin-top: 10px; }
+    .g-err.show { display: block; }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE TWEAKS
+    ═══════════════════════════════════════════ */
+    @media (max-width: 480px) {
+      #top-nav { padding: 10px 16px; }
+      .slide    { padding: 68px 16px 86px; }
+      #bottom-nav { padding: 10px 16px 14px; }
+      .hero-title { font-size: 2.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     PROGRESS BAR
+══════════════════════════════════════════════ -->
+<div id="progress-wrap"><div id="progress-fill"></div></div>
+
+<!-- ══════════════════════════════════════════════
+     TOP NAVBAR
+══════════════════════════════════════════════ -->
+<nav id="top-nav">
+  <div class="nav-logos">
+    <img src="logo_psf.png"      alt="Pancoran Group"    class="nav-logo-pg" />
+    <img src="logo_waterpark.png" alt="Pancoran Waterpark" class="nav-logo-wp" />
+  </div>
+  <a href="https://wa.me/628133278031?text=Halo%20Panitia%20PSF%202026"
+     target="_blank" class="nav-wa">💬 Helpdesk WA</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE CONTAINER
+══════════════════════════════════════════════ -->
+<div id="slide-container">
+
+  <!-- ─────────────────────────────────────────
+       SLIDE 0 ∙ HERO / INTRO
+  ───────────────────────────────────────── -->
+  <div class="slide state-active" id="slide-0">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">⭐ Pendaftaran Resmi</div>
+      <h1 class="hero-title">Pancoran<br /><em>Slide Festival</em><br />2026</h1>
+      <p class="hero-desc">
+        Sensasi seluncur air 20 meter, festival lari seru, dan hadiah uang tunai di Pancoran Waterpark!
+        Daftarkan dirimu sebelum kehabisan tempat.
+      </p>
+      <div class="hero-pills">
+        <div class="hero-pill">📅 <strong>Minggu, 4 Oktober 2026</strong></div>
+        <div class="hero-pill">📍 <strong>Pancoran Waterpark</strong></div>
+        <div class="hero-pill">⏰ 06.00 WIB – Selesai</div>
+      </div>
+      <button class="start-btn" id="start-btn">
+        Mulai Daftar <span class="start-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       SLIDE 1 ∙ NAMA LENGKAP
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-1">
+    <div class="slide-inner">
+      <div class="q-label"><span class="q-bubble">1</span> →</div>
+      <h2 class="q-title">Siapa nama lengkap Anda? 👋</h2>
+      <p class="q-sub">Data ini akan digunakan untuk pencetakan nomor BIB peserta dan sertifikat.</p>
+      <input class="tf-input" type="text" id="fullname"
+             placeholder="Ketik nama lengkap Anda..." autocomplete="off" />
+      <div class="tf-err" id="err-fullname">Nama lengkap wajib diisi.</div>
+      <button class="ok-btn" data-next>OK <span class="enter-key">tekan Enter ↵</span></button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       SLIDE 2 ∙ NAMA PANGGILAN BIB
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-2">
+    <div class="slide-inner">
+      <div class="q-label"><span class="q-bubble">2</span> →</div>
+      <h2 class="q-title">Nama panggilan untuk nomor BIB? 🏷️</h2>
+      <p class="q-sub">Nama ini yang akan tercetak di nomor dada Anda. Maksimal 10 karakter — gunakan huruf kapital.</p>
+      <input class="tf-input" type="text" id="nickname"
+             placeholder="Contoh: RUDI" maxlength="10" autocomplete="off" />
+      <div class="tf-hint">ℹ️ Maks. 10 karakter</div>
+      <div class="tf-err" id="err-nickname">Nama panggilan BIB wajib diisi.</div>
+      <button class="ok-btn" data-next>OK <span class="enter-key">tekan Enter ↵</span></button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       SLIDE 3 ∙ JENIS KELAMIN
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-3">
+    <div class="slide-inner">
+      <div class="q-label"><span class="q-bubble">3</span> →</div>
+      <h2 class="q-title">Jenis kelamin Anda? 🙋</h2>
+      <p class="q-sub">Untuk pengelompokan peserta. Tekan <strong style="color:var(--green)">A</strong> atau <strong style="color:var(--green)">B</strong> untuk memilih cepat.</p>
+      <div class="gender-grid">
+        <label class="gender-card" id="gc-L">
+          <input type="radio" name="gender" value="Laki-laki" />
+          <span class="gc-emoji">🏃</span>
+          <span>Laki-laki</span>
+          <span class="gc-key">A</span>
+        </label>
+        <label class="gender-card" id="gc-P">
+          <input type="radio" name="gender" value="Perempuan" />
+          <span class="gc-emoji">🏃‍♀️</span>
+          <span>Perempuan</span>
+          <span class="gc-key">B</span>
+        </label>
+      </div>
+      <div class="g-err" id="err-gender">Silakan pilih jenis kelamin.</div>
+      <button class="ok-btn" data-next style="margin-top:20px;">OK <span class="enter-key">tekan Enter ↵</span></button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       SLIDE 4 ∙ WHATSAPP
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-4">
+    <div class="slide-inner">
+      <div class="q-label"><span class="q-bubble">4</span> →</div>
+      <h2 class="q-title">Nomor WhatsApp aktif Anda? 📱</h2>
+      <p class="q-sub">E-tiket dan konfirmasi resmi akan dikirimkan langsung ke nomor ini. Pastikan aktif di WhatsApp.</p>
+      <input class="tf-input" type="tel" id="wa"
+             placeholder="Contoh: 081234567890" autocomplete="off" />
+      <div class="tf-hint">ℹ️ Minimal 10 digit, aktif di WhatsApp</div>
+      <div class="tf-err" id="err-wa">Nomor WhatsApp aktif wajib diisi (minimal 10 digit).</div>
+      <button class="ok-btn" data-next>OK <span class="enter-key">tekan Enter ↵</span></button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       SLIDE 5 ∙ MEDIA SOSIAL
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-5">
+    <div class="slide-inner">
+      <div class="q-label"><span class="q-bubble">5</span> →</div>
+      <h2 class="q-title">Akun media sosial Anda? 📸</h2>
+      <p class="q-sub">Untuk keperluan dokumentasi dan tag foto resmi event.</p>
+
+      <div class="field-group">
+        <label class="field-label" for="instagram">Instagram *</label>
+        <input class="tf-input" type="text" id="instagram" placeholder="@username" autocomplete="off" />
+        <div class="tf-err" id="err-instagram">Akun Instagram wajib diisi.</div>
+      </div>
+      <div class="field-group" style="margin-bottom:0;">
+        <label class="field-label field-label-muted" for="tiktok">TikTok <span style="font-weight:500;font-style:italic;">(opsional)</span></label>
+        <input class="tf-input" type="text" id="tiktok" placeholder="@username" autocomplete="off" />
+      </div>
+      <button class="ok-btn" data-next>OK <span class="enter-key">tekan Enter ↵</span></button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       SLIDE 6 ∙ KATEGORI LOMBA  ← MAIN SECTION
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-6">
+    <div class="slide-inner-wide">
+      <div class="q-label"><span class="q-bubble">6</span> →</div>
+      <h2 class="q-title">Pilih kategori lomba Anda 🎟️</h2>
+      <p class="q-sub">
+        Pilih tantangan yang ingin Anda ikuti di Pancoran Slide Festival 2026.
+        Tekan angka <strong style="color:var(--green)">1–4</strong> untuk pilih cepat.
+      </p>
+
+      <div class="category-grid">
+
+        <!-- Lari 6K -->
+        <label class="cat-card" id="cc-1">
+          <input type="radio" name="ticket" value="Lari 6K" data-price="35000" />
+          <div class="cat-check">✓</div>
+          <span class="cat-key">1</span>
+          <span class="cat-badge" style="background:rgba(14,165,233,0.14);color:#38bdf8;">FUN RUN</span>
+          <div class="cat-name">Lari 6K</div>
+          <div class="cat-price">Rp 35.000</div>
+          <ul class="cat-perks">
+            <li>All akses wahana Pancoran</li>
+            <li>Refreshment &amp; fun games</li>
+            <li>Dokumentasi foto digital</li>
+            <li>Produk Bejo Jahe Merah</li>
+          </ul>
+        </label>
+
+        <!-- Slide Challenge -->
+        <label class="cat-card" id="cc-2">
+          <input type="radio" name="ticket" value="Slide Challenge" data-price="45000" />
+          <div class="cat-check">✓</div>
+          <span class="cat-key">2</span>
+          <span class="cat-badge" style="background:rgba(245,158,11,0.14);color:#fbbf24;">CHALLENGE</span>
+          <div class="cat-name">Slide Challenge</div>
+          <div class="cat-price">Rp 45.000</div>
+          <ul class="cat-perks">
+            <li>All akses wahana Pancoran</li>
+            <li>Peluang hadiah uang tunai</li>
+            <li>Dokumentasi foto digital</li>
+            <li>Produk Bejo Jahe Merah</li>
+          </ul>
+        </label>
+
+        <!-- Extreme Running -->
+        <label class="cat-card" id="cc-3">
+          <input type="radio" name="ticket" value="Extreme Running" data-price="80000" />
+          <div class="cat-check">✓</div>
+          <span class="cat-key">3</span>
+          <span class="cat-badge" style="background:rgba(52,168,83,0.14);color:#4ade80;">COMBO 🔥</span>
+          <div class="cat-name">Extreme Running</div>
+          <div class="cat-price">Rp 80.000</div>
+          <ul class="cat-perks">
+            <li>Lari 6K + Slide Challenge</li>
+            <li>Peluang hadiah uang tunai</li>
+            <li>Dokumentasi foto digital</li>
+            <li>Produk Bejo Jahe Merah</li>
+          </ul>
+        </label>
+
+        <!-- Extreme Running Lengkap -->
+        <label class="cat-card" id="cc-4">
+          <input type="radio" name="ticket" value="Extreme Running Lengkap" data-price="120000" />
+          <div class="cat-check">✓</div>
+          <span class="cat-key">4</span>
+          <span class="cat-badge" style="background:rgba(239,68,68,0.13);color:#f87171;">BEST VALUE ⭐</span>
+          <div class="cat-name">Extreme Running Lengkap</div>
+          <div class="cat-price">Rp 120.000</div>
+          <ul class="cat-perks">
+            <li>Semua benefit Extreme Running</li>
+            <li><strong style="color:#fff;">Official Merch Slow Burn</strong></li>
+            <li>Hadiah tunai &amp; foto digital</li>
+            <li>Produk Bejo Jahe Merah</li>
+          </ul>
+        </label>
+
+      </div>
+      <div class="g-err" id="err-ticket">Silakan pilih salah satu kategori lomba.</div>
+      <button class="ok-btn" data-next style="margin-top:16px;">OK <span class="enter-key">tekan Enter ↵</span></button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       SLIDE 7 ∙ SAFETY WAIVER (CONDITIONAL)
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-7">
+    <div class="slide-inner">
+      <div class="q-label"><span class="q-bubble" id="qb-7">7</span> →</div>
+      <h2 class="q-title">Safety Waiver &amp; Kesepakatan 🦺</h2>
+      <p class="q-sub">Karena Anda memilih tantangan seluncuran air, mohon baca dan setujui ketentuan keselamatan berikut.</p>
+
+      <div class="waiver-alert">
+        <span>⚠️</span>
+        <span>Aktivitas <strong>Slide Challenge</strong> memerlukan kondisi fisik sehat serta kepatuhan terhadap arahan instruktur &amp; lifeguard.</span>
+      </div>
+
+      <div class="waiver-scroll">
+        <h4>A. KETENTUAN UMUM</h4>
+        <ol>
+          <li>Pancoran Slide Festival 2026 diselenggarakan pada Minggu, 4 Oktober 2026 di Pancoran Waterpark.</li>
+          <li>Tiket masuk festival berlaku sesuai kategori tiket yang dibeli:
+            <ul>
+              <li><strong>Presale:</strong> Rp45.000/orang.</li>
+              <li><strong>OTS Loket:</strong> Rp50.000/orang, untuk pembelian tiket melalui loket yang ditentukan oleh penyelenggara.</li>
+              <li><strong>OTS Venue:</strong> Rp30.000/orang, untuk tiket masuk reguler Pancoran Waterpark yang dibeli di Loket dan tidak termasuk akses/keikutsertaan Slide Challenge atau program khusus festival.</li>
+            </ul>
+          </li>
+          <li>Tiket yang telah dibeli tidak dapat dikembalikan (non-refundable), kecuali acara dibatalkan oleh pihak penyelenggara.</li>
+          <li>Tiket tidak dapat dipindahtangankan tanpa persetujuan pihak penyelenggara.</li>
+          <li>Peserta wajib mengikuti seluruh peraturan venue, instruksi panitia, lifeguard, dan petugas keamanan.</li>
+          <li>Penyelenggara berhak menolak atau mengeluarkan pengunjung yang melanggar ketentuan tanpa kewajiban pengembalian tiket.</li>
+        </ol>
+
+        <h4>B. KETENTUAN SLIDE CHALLENGE</h4>
+        <ol>
+          <li>Peserta wajib melakukan registrasi ulang sebelum mengikuti kompetisi.</li>
+          <li>Peserta wajib menggunakan pakaian yang sesuai untuk aktivitas air dan tidak membahayakan diri sendiri maupun peserta lain:
+            <ul>
+              <li>Pakaian yang dimaksud seperti swimwear, rash guard, pakaian olahraga berbahan ringan dan cepat kering, atau pakaian renang yang dirancang khusus untuk aktivitas air.</li>
+              <li>Pakaian tidak boleh memiliki bagian yang mudah tersangkut, aksesori keras, benda tajam, ritsleting/buckle yang berlebihan, atau material yang dapat mengganggu keselamatan saat menggunakan wahana.</li>
+              <li>Peserta tidak diperkenankan menggunakan pakaian berbahan berat yang menyerap banyak air, pakaian dengan aksesori yang berpotensi melukai, maupun pakaian yang dapat menghambat pergerakan selama aktivitas.</li>
+            </ul>
+          </li>
+          <li>Peserta wajib mengikuti briefing dan instruksi keselamatan sebelum melakukan slide.</li>
+          <li>Peserta wajib memenuhi persyaratan tinggi badan, berat badan, dan kondisi fisik sesuai ketentuan wahana:
+            <ul>
+              <li><strong>Tinggi badan:</strong> Memenuhi batas minimum dan/atau maksimum tinggi badan yang ditentukan untuk wahana. Pengukuran dilakukan petugas apabila diperlukan.</li>
+              <li><strong>Berat badan:</strong> Berada dalam batas berat badan yang diperbolehkan demi menjaga keamanan dan spesifikasi teknis wahana.</li>
+              <li><strong>Kondisi fisik:</strong> Berada dalam kondisi fisik yang sehat dan mampu melakukan aktivitas air. Peserta yang mengalami cedera, kelelahan berat, pusing, dsb. tidak diperkenankan ikut.</li>
+              <li><strong>Kondisi khusus:</strong> Wajib mengikuti arahan petugas apabila terdapat kondisi atau pembatasan khusus.</li>
+            </ul>
+          </li>
+          <li><strong>Kategori Slider:</strong>
+            <ul>
+              <li><strong>Regular Weight:</strong> Usia min. 15 th, Tinggi &gt;150 cm, Berat 40–70 kg</li>
+              <li><strong>Heavy Weight:</strong> Usia min. 15 th, Tinggi &gt;150 cm, Berat &gt;70 kg</li>
+            </ul>
+          </li>
+          <li><strong>Kategori Challenge (masing-masing 1 setiap kategori Slider):</strong>
+            <ul>
+              <li><strong>Best Freestyle (Fresh money):</strong> Gaya paling kreatif saat slide, tetap dalam batas gerakan yang diizinkan operator.</li>
+              <li><strong>Loudest Slider (Fresh money):</strong> Peserta paling ekspresif/berisik saat challenge.</li>
+              <li><strong>Smoothest Splash (Fresh money):</strong> Peserta dengan cipratan air paling minim.</li>
+              <li><strong>Best Crowd (Fresh money):</strong> Peserta dengan dukungan suporter paling banyak.</li>
+            </ul>
+          </li>
+          <li>Peserta dilarang berdiri saat meluncur, meluncur dengan posisi yang dilarang, mendorong atau mengganggu peserta lain, serta membawa benda berbahaya.</li>
+          <li>Peserta wajib mengikuti seluruh mekanisme dan jadwal challenge. Peserta yang tidak hadir saat dipanggil dapat dianggap gugur.</li>
+          <li>Panitia berhak menghentikan peserta apabila dinilai membahayakan diri sendiri, orang lain, atau fasilitas.</li>
+        </ol>
+
+        <h4>C. KESELAMATAN WAHANA</h4>
+        <ol>
+          <li>Setiap pengunjung wajib memperhatikan rambu dan petunjuk keselamatan di area wahana.</li>
+          <li>Pengunjung wajib mematuhi instruksi lifeguard/operator wahana.</li>
+          <li>Penggunaan wahana dapat dihentikan sementara karena faktor cuaca, kondisi teknis, kepadatan, atau alasan keselamatan.</li>
+          <li>Pengunjung yang sedang tidak fit, mabuk, atau di bawah pengaruh zat terlarang dilarang menggunakan wahana.</li>
+          <li>Dilarang membawa makanan, minuman, kaca, benda tajam, atau benda berbahaya ke area kolam/wahana.</li>
+          <li>Anak-anak wajib berada dalam pengawasan orang tua/wali.</li>
+          <li>Penyelenggara tidak bertanggung jawab atas kehilangan atau kerusakan barang pribadi.</li>
+        </ol>
+
+        <h4>D. KETENTUAN AREA FESTIVAL</h4>
+        <ol>
+          <li>Pengunjung wajib menjaga kebersihan dan fasilitas Pancoran Waterpark.</li>
+          <li>Dilarang melakukan tindakan yang mengganggu kenyamanan atau keamanan pengunjung lain.</li>
+          <li>Dilarang membawa senjata, benda berbahaya, minuman keras, narkotika, atau barang terlarang lainnya.</li>
+          <li>Dilarang merusak properti, fasilitas, dekorasi, maupun perlengkapan acara.</li>
+          <li>Dokumentasi foto/video selama acara dapat digunakan oleh penyelenggara untuk kebutuhan publikasi dan promosi.</li>
+        </ol>
+
+        <h4>E. PERUBAHAN ACARA</h4>
+        <ol>
+          <li>Rundown, pengisi acara, aktivitas, maupun fasilitas dapat berubah sewaktu-waktu berdasarkan kondisi operasional.</li>
+          <li>Penyelenggara berhak menyesuaikan atau menghentikan aktivitas apabila terjadi kondisi yang berpotensi membahayakan keselamatan.</li>
+          <li>Dalam kondisi force majeure seperti cuaca ekstrem atau bencana, keputusan penyelenggara bersifat final.</li>
+        </ol>
+
+        <h4>F. KETENTUAN HADIAH</h4>
+        <ol>
+          <li>Hadiah diberikan kepada peserta yang memenuhi seluruh ketentuan challenge.</li>
+          <li>Pemenang wajib menunjukkan identitas valid saat proses klaim hadiah.</li>
+          <li>Hadiah tidak dapat diuangkan atau ditukar dengan hadiah lainnya, kecuali ditentukan lain oleh penyelenggara.</li>
+        </ol>
+
+        <h4>G. PERSETUJUAN PESERTA</h4>
+        <p>Dengan membeli tiket dan/atau mengikuti Pancoran Slide Festival 2026, pengunjung dan peserta dianggap telah membaca, memahami, dan menyetujui seluruh Terms &amp; Conditions yang berlaku.</p>
+      </div>
+
+      <label class="tf-check-row">
+        <input type="checkbox" id="tnc-agree" />
+        <span>Saya telah membaca, memahami, dan <strong>menyetujui seluruh syarat &amp; ketentuan serta safety waiver</strong> di atas.</span>
+      </label>
+      <div class="g-err" id="err-tnc">Anda wajib menyetujui ketentuan untuk melanjutkan.</div>
+      <button class="ok-btn" data-next style="margin-top:18px;">OK <span class="enter-key">tekan Enter ↵</span></button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       SLIDE 8 ∙ PEMBAYARAN & UPLOAD
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-8">
+    <div class="slide-inner">
+      <div class="q-label"><span class="q-bubble" id="qb-8">8</span> →</div>
+      <h2 class="q-title">Pembayaran &amp; Upload Bukti 💳</h2>
+      <p class="q-sub">Transfer sesuai nominal tiket yang Anda pilih, lalu lampirkan bukti pembayaran.</p>
+
+      <div class="pay-grid">
+        <!-- Bank BCA -->
+        <div class="pay-card">
+          <div class="pay-card-lbl">🏦 Transfer Bank</div>
+          <div class="pay-card-bank">Bank BCA</div>
+          <div class="pay-card-num">0828 9212 1120</div>
+          <div class="pay-card-name">a.n. Panitia Pancoran Slide Festival</div>
+          <button type="button" class="copy-btn" id="bca-copy-btn" onclick="copyBCA('082892121120')">
+            📋 Salin Nomor
+          </button>
+        </div>
+        <!-- QRIS -->
+        <div class="pay-card">
+          <div class="pay-card-lbl">📱 QRIS All Payment</div>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:8px;">
+            <div class="qris-placeholder">📱<br /><strong>QRIS</strong><br />Scan</div>
+            <div>
+              <div style="font-size:0.82rem;font-weight:700;margin-bottom:4px;">Semua dompet digital</div>
+              <div style="font-size:0.72rem;color:var(--muted);line-height:1.55;">
+                GoPay, OVO, Dana,<br />ShopeePay, LinkAja, BCA
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nama pengirim -->
+      <div class="field-group">
+        <label class="field-label" for="sender_name">Nama Pengirim Transfer *</label>
+        <input class="tf-input" type="text" id="sender_name"
+               placeholder="Contoh: Rudi Pratama (sesuai mutasi rekening)"
+               autocomplete="off" />
+        <div class="tf-err" id="err-sender">Nama pengirim transfer wajib diisi.</div>
+      </div>
+
+      <!-- Upload -->
+      <div class="field-group" style="margin-bottom:0;">
+        <label class="field-label" style="margin-bottom:8px;">Upload Bukti Transfer *</label>
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="file_input" accept="image/*,.pdf" />
+          <div class="dz-icon">📎</div>
+          <div class="dz-text" id="dz-text">Klik atau seret file bukti transfer ke sini</div>
+          <div class="dz-sub">JPG, PNG, atau PDF (Maks. 5 MB)</div>
+        </div>
+        <div class="g-err" id="err-file">Bukti pembayaran wajib dilampirkan.</div>
+      </div>
+
+      <button class="ok-btn" data-next>OK <span class="enter-key">tekan Enter ↵</span></button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       SLIDE 9 ∙ REVIEW & SUBMIT
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-9">
+    <div class="slide-inner">
+      <div class="q-label"><span class="q-bubble" id="qb-9">9</span> →</div>
+      <h2 class="q-title">Periksa kembali data Anda 📋</h2>
+      <p class="q-sub">Pastikan semua data sudah benar sebelum pendaftaran dikirimkan.</p>
+
+      <div class="review-box">
+        <div class="rv-row"><span class="rv-lbl">Nama Lengkap</span>   <span class="rv-val" id="rev-fullname">-</span></div>
+        <div class="rv-row"><span class="rv-lbl">Nama BIB</span>       <span class="rv-val" id="rev-nickname">-</span></div>
+        <div class="rv-row"><span class="rv-lbl">Jenis Kelamin</span>  <span class="rv-val" id="rev-gender">-</span></div>
+        <div class="rv-row"><span class="rv-lbl">WhatsApp</span>       <span class="rv-val" id="rev-wa">-</span></div>
+        <div class="rv-row"><span class="rv-lbl">Instagram</span>      <span class="rv-val" id="rev-ig">-</span></div>
+        <div class="rv-row"><span class="rv-lbl">Kategori Lomba</span> <span class="rv-val" id="rev-ticket">-</span></div>
+        <div class="rv-row"><span class="rv-lbl">Pengirim Transfer</span><span class="rv-val" id="rev-sender">-</span></div>
+        <div class="rv-row" style="padding-top:14px;">
+          <span class="rv-lbl" style="font-weight:700;color:var(--text);">Total Pembayaran</span>
+          <span class="rv-total" id="rev-price">Rp 0</span>
+        </div>
+      </div>
+
+      <div class="secure-note">🔒 Data aman &amp; e-tiket dikirim via WhatsApp setelah verifikasi panitia.</div>
+
+      <button class="ok-btn" id="submit-btn" style="margin-top:0;">
+        <span id="submit-label">🚀 Kirim Pendaftaran</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
+       SLIDE SUCCESS
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-success">
+    <div class="slide-inner success-wrap">
+      <div class="success-emoji">🎉</div>
+      <h2 class="success-title">Pendaftaran Berhasil!</h2>
+      <p class="success-desc">
+        Terima kasih, <strong id="success-name">Sahabat Pancoran</strong>!<br />
+        Data dan bukti pembayaran Anda telah kami terima.<br />
+        Tim panitia akan memverifikasi dan menghubungi Anda via WhatsApp.
+      </p>
+      <button class="success-restart" onclick="location.reload()">Daftarkan Peserta Lain</button>
+    </div>
+  </div>
+
+</div><!-- /#slide-container -->
+
+<!-- ══════════════════════════════════════════════
+     BOTTOM NAV
+══════════════════════════════════════════════ -->
+<div id="bottom-nav" class="hidden">
+  <div class="nav-counter" id="nav-counter">1 / 9</div>
+  <div class="nav-arrows">
+    <button class="nav-arr" id="btn-up"   title="Sebelumnya (↑)" disabled>↑</button>
+    <button class="nav-arr" id="btn-down" title="Selanjutnya (↓)">↓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════ -->
+<script>
+  /* ─── CONFIG ─────────────────────────────────── */
+  const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+  const fmt = n => 'Rp ' + Number(n).toLocaleString('id-ID');
+  const CHALLENGE_TICKETS = ['Slide Challenge','Extreme Running','Extreme Running Lengkap'];
+
+  /* ─── STATE ──────────────────────────────────── */
+  let currentSlide = 0;
+
+  // Slide sequences:
+  const SEQ_WITH_WAIVER = [
+    'slide-0','slide-1','slide-2','slide-3','slide-4',
+    'slide-5','slide-6','slide-7','slide-8','slide-9'
+  ];
+  const SEQ_NO_WAIVER = [
+    'slide-0','slide-1','slide-2','slide-3','slide-4',
+    'slide-5','slide-6','slide-8','slide-9'
+  ];
+
+  function getSeq() {
+    const tc = document.querySelector('input[name="ticket"]:checked');
+    return (tc && CHALLENGE_TICKETS.includes(tc.value))
+      ? SEQ_WITH_WAIVER : SEQ_NO_WAIVER;
+  }
+
+  /* ─── COPY BCA ───────────────────────────────── */
+  function copyBCA(acc) {
+    navigator.clipboard.writeText(acc).then(() => {
+      const btn = document.getElementById('bca-copy-btn');
+      btn.textContent = '✓ Tersalin!';
+      setTimeout(() => btn.textContent = '📋 Salin Nomor', 2200);
+    }).catch(() => alert('Nomor BCA: ' + acc));
+  }
+
+  /* ─── PROGRESS & COUNTER ─────────────────────── */
+  function updateUI() {
+    const seq   = getSeq();
+    const total = seq.length - 2;        // exclude intro(0) and review(last)
+    const pos   = currentSlide;          // 0=intro, 1..n=steps
+
+    // progress bar (0% on intro, 100% on review/success)
+    let pct = 0;
+    if (pos > 0) pct = Math.min(100, Math.round((pos / (seq.length - 1)) * 100));
+    document.getElementById('progress-fill').style.width = pct + '%';
+
+    // counter
+    const formPos = Math.max(0, pos - 1);
+    const formTotal = seq.length - 2;
+    if (pos > 0 && pos < seq.length) {
+      document.getElementById('nav-counter').textContent = formPos + ' / ' + formTotal;
+    }
+
+    // show/hide bottom nav
+    const bn = document.getElementById('bottom-nav');
+    bn.classList.toggle('hidden', pos === 0);
+
+    // arrow states
+    document.getElementById('btn-up').disabled   = (pos <= 1);
+    document.getElementById('btn-down').disabled = false;
+
+    // Dynamic question numbers for slides 7/8/9 (shift when no waiver)
+    const hasWaiver = CHALLENGE_TICKETS.includes(
+      document.querySelector('input[name="ticket"]:checked')?.value
+    );
+    if (document.getElementById('qb-7')) {
+      document.getElementById('qb-7').textContent = '7';
+      document.getElementById('qb-8').textContent = hasWaiver ? '8' : '7';
+      document.getElementById('qb-9').textContent = hasWaiver ? '9' : '8';
+    }
+  }
+
+  /* ─── ANIMATION ──────────────────────────────── */
+  function goTo(toId, dir) {
+    const fromEl = document.querySelector('.slide.state-active');
+    const toEl   = document.getElementById(toId);
+    if (!toEl || fromEl === toEl) return;
+
+    // position incoming slide off-screen
+    toEl.classList.remove('state-active','state-above','state-below');
+    void toEl.offsetWidth; // reflow
+    toEl.classList.add(dir === 'fwd' ? 'state-below' : 'state-above');
+
+    // start transition on next tick
+    requestAnimationFrame(() => {
+      fromEl.classList.remove('state-active');
+      fromEl.classList.add(dir === 'fwd' ? 'state-above' : 'state-below');
+      toEl.classList.remove('state-above','state-below');
+      toEl.classList.add('state-active');
+    });
+
+    // focus first input after animation
+    setTimeout(() => {
+      const inp = toEl.querySelector(
+        'input:not([type="radio"]):not([type="checkbox"]):not([type="file"])'
+      );
+      if (inp) inp.focus();
+    }, 340);
+  }
+
+  /* ─── VALIDATION ─────────────────────────────── */
+  function showErr(id, show) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('show', show);
+  }
+  function setInputErr(id, hasErr) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('err', hasErr);
+  }
+
+  function validate(slideId) {
+    if (slideId === 'slide-1') {
+      const v = document.getElementById('fullname').value.trim();
+      setInputErr('fullname', !v); showErr('err-fullname', !v);
+      return !!v;
+    }
+    if (slideId === 'slide-2') {
+      const v = document.getElementById('nickname').value.trim();
+      setInputErr('nickname', !v); showErr('err-nickname', !v);
+      return !!v;
+    }
+    if (slideId === 'slide-3') {
+      const g = document.querySelector('input[name="gender"]:checked');
+      showErr('err-gender', !g);
+      return !!g;
+    }
+    if (slideId === 'slide-4') {
+      const v = document.getElementById('wa').value.replace(/\D/g,'');
+      setInputErr('wa', v.length < 10); showErr('err-wa', v.length < 10);
+      return v.length >= 10;
+    }
+    if (slideId === 'slide-5') {
+      const ig = document.getElementById('instagram').value.trim();
+      setInputErr('instagram', !ig); showErr('err-instagram', !ig);
+      return !!ig;
+    }
+    if (slideId === 'slide-6') {
+      const tc = document.querySelector('input[name="ticket"]:checked');
+      showErr('err-ticket', !tc);
+      return !!tc;
+    }
+    if (slideId === 'slide-7') {
+      const ok = document.getElementById('tnc-agree').checked;
+      showErr('err-tnc', !ok);
+      return ok;
+    }
+    if (slideId === 'slide-8') {
+      const sn   = document.getElementById('sender_name').value.trim();
+      const file = document.getElementById('file_input').files[0];
+      setInputErr('sender_name', !sn); showErr('err-sender', !sn);
+      showErr('err-file', !file);
+      return sn && !!file;
+    }
+    return true;
+  }
+
+  /* ─── NAVIGATE ───────────────────────────────── */
+  function navigate(dir) {
+    const seq  = getSeq();
+    const curId = seq[currentSlide];
+
+    if (dir === 'fwd') {
+      if (!validate(curId)) return;
+      if (currentSlide >= seq.length - 1) return;
+      // populate review when entering last slide
+      if (seq[currentSlide + 1] === 'slide-9') populateReview();
+      currentSlide++;
+      goTo(seq[currentSlide], 'fwd');
+    } else {
+      if (currentSlide <= 1) return;
+      currentSlide--;
+      goTo(seq[currentSlide], 'bwd');
+    }
+    updateUI();
+  }
+
+  /* ─── POPULATE REVIEW ────────────────────────── */
+  function populateReview() {
+    const tc = document.querySelector('input[name="ticket"]:checked');
+    document.getElementById('rev-fullname').textContent = document.getElementById('fullname').value.trim();
+    document.getElementById('rev-nickname').textContent = document.getElementById('nickname').value.trim();
+    document.getElementById('rev-gender').textContent   = document.querySelector('input[name="gender"]:checked')?.value || '-';
+    document.getElementById('rev-wa').textContent       = document.getElementById('wa').value.trim();
+    document.getElementById('rev-ig').textContent       = document.getElementById('instagram').value.trim();
+    document.getElementById('rev-ticket').textContent   = tc ? tc.value : '-';
+    document.getElementById('rev-sender').textContent   = document.getElementById('sender_name').value.trim();
+    document.getElementById('rev-price').textContent    = tc ? fmt(tc.dataset.price) : 'Rp 0';
+  }
+
+  /* ─── FILE UPLOAD ────────────────────────────── */
+  function fileToBase64(file) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload  = () => res(r.result.split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+  }
+
+  const fileInput = document.getElementById('file_input');
+  const dropzone  = document.getElementById('dropzone');
+  const dzText    = document.getElementById('dz-text');
+
+  fileInput.addEventListener('change', () => {
+    const f = fileInput.files[0];
+    if (!f) return;
+    if (f.size > 5 * 1024 * 1024) {
+      alert('File melebihi batas 5 MB!');
+      fileInput.value = '';
+      return;
+    }
+    dzText.textContent = '📄 ' + f.name + ' (' + (f.size / 1024).toFixed(0) + ' KB)';
+    showErr('err-file', false);
+  });
+  dropzone.addEventListener('dragover',  e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop',      e => {
+    e.preventDefault(); dropzone.classList.remove('dragover');
+    const f = e.dataTransfer.files[0];
+    if (f) {
+      const dt = new DataTransfer(); dt.items.add(f);
+      fileInput.files = dt.files;
+      dzText.textContent = '📄 ' + f.name;
+      showErr('err-file', false);
+    }
+  });
+
+  /* ─── SUBMIT ─────────────────────────────────── */
+  async function submitRegistration() {
+    const btn   = document.getElementById('submit-btn');
+    const label = document.getElementById('submit-label');
+    btn.disabled = true;
+    label.textContent = 'Mengirim data…';
+
+    const tc   = document.querySelector('input[name="ticket"]:checked');
+    const file = fileInput.files[0];
+    const b64  = file ? await fileToBase64(file) : '';
+
+    const payload = {
+      fullname:   document.getElementById('fullname').value.trim(),
+      nickname:   document.getElementById('nickname').value.trim(),
+      gender:     document.querySelector('input[name="gender"]:checked')?.value || '',
+      wa:         document.getElementById('wa').value.trim(),
+      instagram:  document.getElementById('instagram').value.trim(),
+      tiktok:     document.getElementById('tiktok').value.trim(),
+      ticket:     tc.value,
+      price:      tc.dataset.price,
+      tncAgreed:  document.getElementById('tnc-agree').checked,
+      senderName: document.getElementById('sender_name').value.trim(),
+      fileName:   file ? file.name : '',
+      fileData:   b64,
+      fileType:   file ? file.type : '',
+      timestamp:  new Date().toISOString()
+    };
+
+    try {
+      await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+      goTo('slide-success', 'fwd');
+      document.getElementById('bottom-nav').classList.add('hidden');
+      document.getElementById('progress-fill').style.width = '100%';
+      document.getElementById('success-name').textContent = payload.fullname;
+    } catch (err) {
+      console.error(err);
+      alert('Gagal mengirim data. Periksa koneksi dan coba lagi.');
+      btn.disabled = false;
+      label.textContent = '🚀 Kirim Pendaftaran';
+    }
+  }
+
+  /* ─── GENDER CARD UI ─────────────────────────── */
+  function syncGenderUI() {
+    document.querySelectorAll('.gender-card').forEach(card => {
+      card.classList.toggle('chosen', card.querySelector('input').checked);
+    });
+    showErr('err-gender', false);
+  }
+  document.querySelectorAll('.gender-card input').forEach(r =>
+    r.addEventListener('change', syncGenderUI)
+  );
+
+  /* ─── CATEGORY CARD UI ───────────────────────── */
+  function syncCatUI() {
+    document.querySelectorAll('.cat-card').forEach(card => {
+      card.classList.toggle('chosen', card.querySelector('input').checked);
+    });
+    showErr('err-ticket', false);
+  }
+  document.querySelectorAll('.cat-card input').forEach(r =>
+    r.addEventListener('change', syncCatUI)
+  );
+
+  /* ─── EVENT BINDINGS ─────────────────────────── */
+
+  // Hero start button
+  document.getElementById('start-btn').addEventListener('click', () => {
+    currentSlide = 1;
+    goTo('slide-1', 'fwd');
+    updateUI();
+  });
+
+  // All [data-next] OK buttons
+  document.querySelectorAll('[data-next]').forEach(btn =>
+    btn.addEventListener('click', () => navigate('fwd'))
+  );
+
+  // Submit button
+  document.getElementById('submit-btn').addEventListener('click', submitRegistration);
+
+  // Nav arrows
+  document.getElementById('btn-up').addEventListener('click',   () => navigate('bwd'));
+  document.getElementById('btn-down').addEventListener('click', () => navigate('fwd'));
+
+  /* ─── KEYBOARD SHORTCUTS ─────────────────────── */
+  window.addEventListener('keydown', e => {
+    const seq   = getSeq();
+    const curId = seq[currentSlide];
+
+    // Hero → Enter to start
+    if (currentSlide === 0) {
+      if (e.key === 'Enter') { e.preventDefault(); document.getElementById('start-btn').click(); }
+      return;
+    }
+    // Success → no shortcuts
+    if (curId === 'slide-success') return;
+
+    // Enter → next (except on review)
+    if (e.key === 'Enter' && !e.shiftKey) {
+      if (document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        if (curId === 'slide-9') submitRegistration();
+        else navigate('fwd');
+      }
+    }
+
+    // Slide 3: A/B for gender
+    if (curId === 'slide-3') {
+      if (e.key.toLowerCase() === 'a') {
+        document.querySelector('input[value="Laki-laki"]').checked = true; syncGenderUI();
+      }
+      if (e.key.toLowerCase() === 'b') {
+        document.querySelector('input[value="Perempuan"]').checked = true; syncGenderUI();
+      }
+    }
+
+    // Slide 6: 1-4 for category
+    if (curId === 'slide-6') {
+      const map = { '1':'Lari 6K', '2':'Slide Challenge', '3':'Extreme Running', '4':'Extreme Running Lengkap' };
+      if (map[e.key]) {
+        const r = document.querySelector(`input[value="${map[e.key]}"]`);
+        if (r) { r.checked = true; syncCatUI(); }
+      }
+    }
+  });
+
+  /* ─── INIT ───────────────────────────────────── */
+  updateUI();
+</script>
+
+</body>
+</html>
