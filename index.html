@@ -640,11 +640,43 @@
   </div>
 
   <!-- ─────────────────────────────────────────
+       SLIDE 3B ∙ TINGGI & BERAT BADAN
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-3b">
+    <div class="slide-inner">
+      <div class="q-label"><span class="q-bubble">4</span> →</div>
+      <h2 class="q-title">Tinggi &amp; Berat Badan Anda? ⚖️</h2>
+      <p class="q-sub">Untuk keselamatan dan pembagian kategori wahana seluncur air (Waterslide).</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="field-group">
+          <label class="field-label" for="height">Tinggi Badan (cm) *</label>
+          <input class="tf-input" type="number" id="height" placeholder="Contoh: 165" min="50" max="250" autocomplete="off" />
+          <div class="tf-hint">ℹ️ Satuan centimeter (cm)</div>
+          <div class="tf-err" id="err-height">Tinggi badan wajib diisi.</div>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="weight">Berat Badan (kg) *</label>
+          <input class="tf-input" type="number" id="weight" placeholder="Contoh: 60" min="20" max="200" autocomplete="off" />
+          <div class="tf-hint">ℹ️ Satuan kilogram (kg)</div>
+          <div class="tf-err" id="err-weight">Berat badan wajib diisi.</div>
+        </div>
+      </div>
+
+      <div id="slide-req-warning" style="display:none;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);border-radius:var(--r);padding:10px 14px;font-size:0.78rem;color:#fde68a;margin-top:8px;line-height:1.5;">
+        ⚠️ Catatan: Untuk wahana <strong>Waterslide / Slide Challenge</strong>, ketentuan standar keselamatan adalah tinggi &gt;150 cm dan berat &ge;40 kg.
+      </div>
+
+      <button class="ok-btn" data-next style="margin-top:16px;">OK <span class="enter-key">tekan Enter ↵</span></button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
        SLIDE 4 ∙ WHATSAPP
   ───────────────────────────────────────── -->
   <div class="slide state-below" id="slide-4">
     <div class="slide-inner">
-      <div class="q-label"><span class="q-bubble">4</span> →</div>
+      <div class="q-label"><span class="q-bubble">5</span> →</div>
       <h2 class="q-title">Nomor WhatsApp aktif Anda? 📱</h2>
       <p class="q-sub">E-tiket dan konfirmasi resmi akan dikirimkan langsung ke nomor ini. Pastikan aktif di WhatsApp.</p>
       <input class="tf-input" type="tel" id="wa"
@@ -660,7 +692,7 @@
   ───────────────────────────────────────── -->
   <div class="slide state-below" id="slide-5">
     <div class="slide-inner">
-      <div class="q-label"><span class="q-bubble">5</span> →</div>
+      <div class="q-label"><span class="q-bubble">6</span> →</div>
       <h2 class="q-title">Akun media sosial Anda? 📸</h2>
       <p class="q-sub">Untuk keperluan dokumentasi dan tag foto resmi event.</p>
 
@@ -682,7 +714,7 @@
   ───────────────────────────────────────── -->
   <div class="slide state-below" id="slide-6">
     <div class="slide-inner-wide">
-      <div class="q-label"><span class="q-bubble">6</span> →</div>
+      <div class="q-label"><span class="q-bubble">7</span> →</div>
       <h2 class="q-title">Pilih kategori lomba Anda 🎟️</h2>
       <p class="q-sub">
         Pilih tantangan yang ingin Anda ikuti di Pancoran Slide Festival 2026.
@@ -950,6 +982,7 @@
         <div class="rv-row"><span class="rv-lbl">Nama Lengkap</span>   <span class="rv-val" id="rev-fullname">-</span></div>
         <div class="rv-row"><span class="rv-lbl">Nama BIB</span>       <span class="rv-val" id="rev-nickname">-</span></div>
         <div class="rv-row"><span class="rv-lbl">Jenis Kelamin</span>  <span class="rv-val" id="rev-gender">-</span></div>
+        <div class="rv-row"><span class="rv-lbl">Tinggi / Berat</span> <span class="rv-val" id="rev-body">-</span></div>
         <div class="rv-row"><span class="rv-lbl">WhatsApp</span>       <span class="rv-val" id="rev-wa">-</span></div>
         <div class="rv-row"><span class="rv-lbl">Instagram</span>      <span class="rv-val" id="rev-ig">-</span></div>
         <div class="rv-row"><span class="rv-lbl">Kategori Lomba</span> <span class="rv-val" id="rev-ticket">-</span></div>
@@ -1019,11 +1052,11 @@
 
   // Slide sequences:
   const SEQ_WITH_WAIVER = [
-    'slide-0','slide-1','slide-2','slide-3','slide-4',
+    'slide-0','slide-1','slide-2','slide-3','slide-3b','slide-4',
     'slide-5','slide-6','slide-7','slide-8','slide-9'
   ];
   const SEQ_NO_WAIVER = [
-    'slide-0','slide-1','slide-2','slide-3','slide-4',
+    'slide-0','slide-1','slide-2','slide-3','slide-3b','slide-4',
     'slide-5','slide-6','slide-8','slide-9'
   ];
 
@@ -1073,9 +1106,9 @@
       document.querySelector('input[name="ticket"]:checked')?.value
     );
     if (document.getElementById('qb-7')) {
-      document.getElementById('qb-7').textContent = '7';
-      document.getElementById('qb-8').textContent = hasWaiver ? '8' : '7';
-      document.getElementById('qb-9').textContent = hasWaiver ? '9' : '8';
+      document.getElementById('qb-7').textContent = '8';
+      document.getElementById('qb-8').textContent = hasWaiver ? '9' : '8';
+      document.getElementById('qb-9').textContent = hasWaiver ? '10' : '9';
     }
   }
 
@@ -1133,6 +1166,21 @@
       showErr('err-gender', !g);
       return !!g;
     }
+    if (slideId === 'slide-3b') {
+      const h = Number(document.getElementById('height').value);
+      const w = Number(document.getElementById('weight').value);
+      const validH = h >= 50 && h <= 250;
+      const validW = w >= 20 && w <= 200;
+      setInputErr('height', !validH); showErr('err-height', !validH);
+      setInputErr('weight', !validW); showErr('err-weight', !validW);
+
+      // Warning jika tidak memenuhi ketentuan wahana waterslide
+      const warn = document.getElementById('slide-req-warning');
+      if (warn) {
+        warn.style.display = (h < 150 || w < 40) ? 'block' : 'none';
+      }
+      return validH && validW;
+    }
     if (slideId === 'slide-4') {
       const v = document.getElementById('wa').value.replace(/\D/g,'');
       setInputErr('wa', v.length < 10); showErr('err-wa', v.length < 10);
@@ -1186,9 +1234,12 @@
   /* ─── POPULATE REVIEW ────────────────────────── */
   function populateReview() {
     const tc = document.querySelector('input[name="ticket"]:checked');
+    const h = document.getElementById('height').value.trim();
+    const w = document.getElementById('weight').value.trim();
     document.getElementById('rev-fullname').textContent = document.getElementById('fullname').value.trim();
     document.getElementById('rev-nickname').textContent = document.getElementById('nickname').value.trim();
     document.getElementById('rev-gender').textContent   = document.querySelector('input[name="gender"]:checked')?.value || '-';
+    document.getElementById('rev-body').textContent     = (h && w) ? `${h} cm / ${w} kg` : '-';
     document.getElementById('rev-wa').textContent       = document.getElementById('wa').value.trim();
     document.getElementById('rev-ig').textContent       = document.getElementById('instagram').value.trim();
     document.getElementById('rev-ticket').textContent   = tc ? tc.value : '-';
@@ -1249,6 +1300,8 @@
       fullname:   document.getElementById('fullname').value.trim(),
       nickname:   document.getElementById('nickname').value.trim(),
       gender:     document.querySelector('input[name="gender"]:checked')?.value || '',
+      height:     Number(document.getElementById('height').value) || '',
+      weight:     Number(document.getElementById('weight').value) || '',
       wa:         document.getElementById('wa').value.trim(),
       instagram:  document.getElementById('instagram').value.trim(),
       tiktok:     document.getElementById('tiktok').value.trim(),
