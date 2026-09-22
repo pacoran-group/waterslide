@@ -1010,7 +1010,7 @@
 ══════════════════════════════════════════════ -->
 <script>
   /* ─── CONFIG ─────────────────────────────────── */
-  const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+  const SCRIPT_URL = 'https://hook.eu1.make.com/7r3j5cfobh4mq6w4vev1kmw8bqdkewuq';
   const fmt = n => 'Rp ' + Number(n).toLocaleString('id-ID');
   const CHALLENGE_TICKETS = ['Slide Challenge','Extreme Running','Extreme Running Lengkap'];
 
@@ -1263,7 +1263,11 @@
     };
 
     try {
-      await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
       goTo('slide-success', 'fwd');
       document.getElementById('bottom-nav').classList.add('hidden');
       document.getElementById('progress-fill').style.width = '100%';
