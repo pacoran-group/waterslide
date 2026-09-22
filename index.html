@@ -68,6 +68,7 @@
     .nav-logos { display: flex; align-items: center; gap: 12px; }
     .nav-logo-pg { height: 26px; width: auto; object-fit: contain; }
     .nav-logo-wp { height: 28px; width: auto; background: #fff; padding: 2px 7px; border-radius: 5px; }
+    .nav-logo-sponsor { height: 26px; width: auto; object-fit: contain; }
     .nav-wa {
       display: flex; align-items: center; gap: 7px;
       background: rgba(52,168,83,0.18); border: 1px solid rgba(52,168,83,0.45);
@@ -303,7 +304,7 @@
     /* ═══════════════════════════════════════════
        PAYMENT SLIDE
     ═══════════════════════════════════════════ */
-    .pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .pay-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; max-width: 340px; }
     @media (max-width: 480px) { .pay-grid { grid-template-columns: 1fr; } }
 
     .pay-card {
@@ -327,13 +328,6 @@
       transition: background 0.2s;
     }
     .copy-btn:hover { background: rgba(52,168,83,0.28); }
-
-    .qris-placeholder {
-      width: 80px; height: 80px; flex-shrink: 0;
-      border: 2px dashed var(--border-hi); border-radius: 8px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-size: 0.62rem; text-align: center; color: var(--hint); line-height: 1.5;
-    }
 
     /* Dropzone */
     .dropzone {
@@ -496,6 +490,7 @@
       #top-nav { padding: 8px 14px; }
       .nav-logo-pg { height: 22px; }
       .nav-logo-wp { height: 24px; padding: 2px 5px; }
+      .nav-logo-sponsor { height: 22px; }
       .nav-wa { font-size: 0.72rem; padding: 5px 11px; }
 
       .slide {
@@ -547,6 +542,7 @@
   <div class="nav-logos">
     <img src="logo_psf.png"      alt="Pancoran Group"    class="nav-logo-pg" />
     <img src="logo_waterpark.png" alt="Pancoran Waterpark" class="nav-logo-wp" />
+    <img src="https://raw.githubusercontent.com/pacoran-group/waterslide/main/67_20251124_224540_0000.png" alt="Sponsor" class="nav-logo-sponsor" />
   </div>
   <a href="https://wa.me/628133728031?text=Halo%20Panitia%20PSF%202026"
      target="_blank" class="nav-wa">💬 Helpdesk WA</a>
@@ -588,7 +584,7 @@
     <div class="slide-inner">
       <div class="q-label"><span class="q-bubble">1</span> →</div>
       <h2 class="q-title">Siapa nama lengkap Anda? 👋</h2>
-      <p class="q-sub">Data ini akan digunakan untuk pencetakan nomor BIB peserta dan sertifikat.</p>
+      <p class="q-sub">Data ini akan digunakan untuk pencetakan nomor dada peserta dan sertifikat.</p>
       <input class="tf-input" type="text" id="fullname"
              placeholder="Ketik nama lengkap Anda..." autocomplete="off" />
       <div class="tf-err" id="err-fullname">Nama lengkap wajib diisi.</div>
@@ -597,17 +593,17 @@
   </div>
 
   <!-- ─────────────────────────────────────────
-       SLIDE 2 ∙ NAMA PANGGILAN BIB
+       SLIDE 2 ∙ NAMA PANGGILAN NOMOR DADA
   ───────────────────────────────────────── -->
   <div class="slide state-below" id="slide-2">
     <div class="slide-inner">
       <div class="q-label"><span class="q-bubble">2</span> →</div>
-      <h2 class="q-title">Nama panggilan untuk nomor BIB? 🏷️</h2>
+      <h2 class="q-title">Nama panggilan untuk nomor dada? 🏷️</h2>
       <p class="q-sub">Nama ini yang akan tercetak di nomor dada Anda. Maksimal 10 karakter — gunakan huruf kapital.</p>
       <input class="tf-input" type="text" id="nickname"
              placeholder="Contoh: RUDI" maxlength="10" autocomplete="off" />
       <div class="tf-hint">ℹ️ Maks. 10 karakter</div>
-      <div class="tf-err" id="err-nickname">Nama panggilan BIB wajib diisi.</div>
+      <div class="tf-err" id="err-nickname">Nama panggilan nomor dada wajib diisi.</div>
       <button class="ok-btn" data-next>OK <span class="enter-key">tekan Enter ↵</span></button>
     </div>
   </div>
@@ -640,43 +636,11 @@
   </div>
 
   <!-- ─────────────────────────────────────────
-       SLIDE 3B ∙ TINGGI & BERAT BADAN
-  ───────────────────────────────────────── -->
-  <div class="slide state-below" id="slide-3b">
-    <div class="slide-inner">
-      <div class="q-label"><span class="q-bubble">4</span> →</div>
-      <h2 class="q-title">Tinggi &amp; Berat Badan Anda? ⚖️</h2>
-      <p class="q-sub">Untuk keselamatan dan pembagian kategori wahana seluncur air (Waterslide).</p>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-        <div class="field-group">
-          <label class="field-label" for="height">Tinggi Badan (cm) *</label>
-          <input class="tf-input" type="number" id="height" placeholder="Contoh: 165" min="50" max="250" autocomplete="off" />
-          <div class="tf-hint">ℹ️ Satuan centimeter (cm)</div>
-          <div class="tf-err" id="err-height">Tinggi badan wajib diisi.</div>
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="weight">Berat Badan (kg) *</label>
-          <input class="tf-input" type="number" id="weight" placeholder="Contoh: 60" min="20" max="200" autocomplete="off" />
-          <div class="tf-hint">ℹ️ Satuan kilogram (kg)</div>
-          <div class="tf-err" id="err-weight">Berat badan wajib diisi.</div>
-        </div>
-      </div>
-
-      <div id="slide-req-warning" style="display:none;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);border-radius:var(--r);padding:10px 14px;font-size:0.78rem;color:#fde68a;margin-top:8px;line-height:1.5;">
-        ⚠️ Catatan: Untuk wahana <strong>Waterslide / Slide Challenge</strong>, ketentuan standar keselamatan adalah tinggi &gt;150 cm dan berat &ge;40 kg.
-      </div>
-
-      <button class="ok-btn" data-next style="margin-top:16px;">OK <span class="enter-key">tekan Enter ↵</span></button>
-    </div>
-  </div>
-
-  <!-- ─────────────────────────────────────────
        SLIDE 4 ∙ WHATSAPP
   ───────────────────────────────────────── -->
   <div class="slide state-below" id="slide-4">
     <div class="slide-inner">
-      <div class="q-label"><span class="q-bubble">5</span> →</div>
+      <div class="q-label"><span class="q-bubble">4</span> →</div>
       <h2 class="q-title">Nomor WhatsApp aktif Anda? 📱</h2>
       <p class="q-sub">E-tiket dan konfirmasi resmi akan dikirimkan langsung ke nomor ini. Pastikan aktif di WhatsApp.</p>
       <input class="tf-input" type="tel" id="wa"
@@ -692,7 +656,7 @@
   ───────────────────────────────────────── -->
   <div class="slide state-below" id="slide-5">
     <div class="slide-inner">
-      <div class="q-label"><span class="q-bubble">6</span> →</div>
+      <div class="q-label"><span class="q-bubble">5</span> →</div>
       <h2 class="q-title">Akun media sosial Anda? 📸</h2>
       <p class="q-sub">Untuk keperluan dokumentasi dan tag foto resmi event.</p>
 
@@ -714,7 +678,7 @@
   ───────────────────────────────────────── -->
   <div class="slide state-below" id="slide-6">
     <div class="slide-inner-wide">
-      <div class="q-label"><span class="q-bubble">7</span> →</div>
+      <div class="q-label"><span class="q-bubble">6</span> →</div>
       <h2 class="q-title">Pilih kategori lomba Anda 🎟️</h2>
       <p class="q-sub">
         Pilih tantangan yang ingin Anda ikuti di Pancoran Slide Festival 2026.
@@ -794,6 +758,40 @@
   </div>
 
   <!-- ─────────────────────────────────────────
+       SLIDE 3B ∙ TINGGI & BERAT BADAN
+       (Kondisional — hanya muncul jika kategori lomba
+        yang dipilih termasuk wahana Waterslide)
+  ───────────────────────────────────────── -->
+  <div class="slide state-below" id="slide-3b">
+    <div class="slide-inner">
+      <div class="q-label"><span class="q-bubble">7</span> →</div>
+      <h2 class="q-title">Tinggi &amp; Berat Badan Anda? ⚖️</h2>
+      <p class="q-sub">Untuk keselamatan dan pembagian kategori wahana seluncur air (Waterslide).</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="field-group">
+          <label class="field-label" for="height">Tinggi Badan (cm) *</label>
+          <input class="tf-input" type="number" id="height" placeholder="Contoh: 165" min="50" max="250" autocomplete="off" />
+          <div class="tf-hint">ℹ️ Satuan centimeter (cm)</div>
+          <div class="tf-err" id="err-height">Tinggi badan wajib diisi.</div>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="weight">Berat Badan (kg) *</label>
+          <input class="tf-input" type="number" id="weight" placeholder="Contoh: 60" min="20" max="200" autocomplete="off" />
+          <div class="tf-hint">ℹ️ Satuan kilogram (kg)</div>
+          <div class="tf-err" id="err-weight">Berat badan wajib diisi.</div>
+        </div>
+      </div>
+
+      <div id="slide-req-warning" style="display:none;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);border-radius:var(--r);padding:10px 14px;font-size:0.78rem;color:#fde68a;margin-top:8px;line-height:1.5;">
+        ⚠️ Catatan: Untuk wahana <strong>Waterslide / Slide Challenge</strong>, ketentuan standar keselamatan adalah tinggi &gt;150 cm dan berat &ge;40 kg.
+      </div>
+
+      <button class="ok-btn" data-next style="margin-top:16px;">OK <span class="enter-key">tekan Enter ↵</span></button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────
        SLIDE 7 ∙ SAFETY WAIVER (CONDITIONAL)
   ───────────────────────────────────────── -->
   <div class="slide state-below" id="slide-7">
@@ -811,13 +809,6 @@
         <h4>A. KETENTUAN UMUM</h4>
         <ol>
           <li>Pancoran Slide Festival 2026 diselenggarakan pada Minggu, 4 Oktober 2026 di Pancoran Waterpark.</li>
-          <li>Tiket masuk festival berlaku sesuai kategori tiket yang dibeli:
-            <ul>
-              <li><strong>Presale:</strong> Rp45.000/orang.</li>
-              <li><strong>OTS Loket:</strong> Rp50.000/orang, untuk pembelian tiket melalui loket yang ditentukan oleh penyelenggara.</li>
-              <li><strong>OTS Venue:</strong> Rp30.000/orang, untuk tiket masuk reguler Pancoran Waterpark yang dibeli di Loket dan tidak termasuk akses/keikutsertaan Slide Challenge atau program khusus festival.</li>
-            </ul>
-          </li>
           <li>Tiket yang telah dibeli tidak dapat dikembalikan (non-refundable), kecuali acara dibatalkan oleh pihak penyelenggara.</li>
           <li>Tiket tidak dapat dipindahtangankan tanpa persetujuan pihak penyelenggara.</li>
           <li>Peserta wajib mengikuti seluruh peraturan venue, instruksi panitia, lifeguard, dan petugas keamanan.</li>
@@ -929,19 +920,6 @@
             📋 Salin Nomor
           </button>
         </div>
-        <!-- QRIS -->
-        <div class="pay-card">
-          <div class="pay-card-lbl">📱 QRIS All Payment</div>
-          <div style="display:flex;gap:12px;align-items:center;margin-top:8px;">
-            <div class="qris-placeholder">📱<br /><strong>QRIS</strong><br />Scan</div>
-            <div>
-              <div style="font-size:0.82rem;font-weight:700;margin-bottom:4px;">Semua dompet digital</div>
-              <div style="font-size:0.72rem;color:var(--muted);line-height:1.55;">
-                GoPay, OVO, Dana,<br />ShopeePay, LinkAja, BCA
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Nama pengirim -->
@@ -980,7 +958,7 @@
 
       <div class="review-box">
         <div class="rv-row"><span class="rv-lbl">Nama Lengkap</span>   <span class="rv-val" id="rev-fullname">-</span></div>
-        <div class="rv-row"><span class="rv-lbl">Nama BIB</span>       <span class="rv-val" id="rev-nickname">-</span></div>
+        <div class="rv-row"><span class="rv-lbl">Nomor Dada</span>       <span class="rv-val" id="rev-nickname">-</span></div>
         <div class="rv-row"><span class="rv-lbl">Jenis Kelamin</span>  <span class="rv-val" id="rev-gender">-</span></div>
         <div class="rv-row"><span class="rv-lbl">Tinggi / Berat</span> <span class="rv-val" id="rev-body">-</span></div>
         <div class="rv-row"><span class="rv-lbl">WhatsApp</span>       <span class="rv-val" id="rev-wa">-</span></div>
@@ -1052,11 +1030,11 @@
 
   // Slide sequences:
   const SEQ_WITH_WAIVER = [
-    'slide-0','slide-1','slide-2','slide-3','slide-3b','slide-4',
-    'slide-5','slide-6','slide-7','slide-8','slide-9'
+    'slide-0','slide-1','slide-2','slide-3','slide-4',
+    'slide-5','slide-6','slide-3b','slide-7','slide-8','slide-9'
   ];
   const SEQ_NO_WAIVER = [
-    'slide-0','slide-1','slide-2','slide-3','slide-3b','slide-4',
+    'slide-0','slide-1','slide-2','slide-3','slide-4',
     'slide-5','slide-6','slide-8','slide-9'
   ];
 
@@ -1107,8 +1085,8 @@
     );
     if (document.getElementById('qb-7')) {
       document.getElementById('qb-7').textContent = '8';
-      document.getElementById('qb-8').textContent = hasWaiver ? '9' : '8';
-      document.getElementById('qb-9').textContent = hasWaiver ? '10' : '9';
+      document.getElementById('qb-8').textContent = hasWaiver ? '9' : '7';
+      document.getElementById('qb-9').textContent = hasWaiver ? '10' : '8';
     }
   }
 
