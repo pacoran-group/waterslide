@@ -329,23 +329,6 @@
     }
     .copy-btn:hover { background: rgba(52,168,83,0.28); }
 
-    /* Dropzone */
-    .dropzone {
-      border: 2px dashed var(--border-hi); border-radius: var(--r);
-      padding: 24px 16px; text-align: center;
-      cursor: pointer; position: relative; transition: all 0.2s;
-    }
-    .dropzone:hover, .dropzone.dragover {
-      border-color: var(--green); background: var(--green-glow);
-    }
-    .dropzone input[type="file"] {
-      position: absolute; inset: 0; opacity: 0;
-      width: 100%; height: 100%; cursor: pointer;
-    }
-    .dz-icon { font-size: 2rem; margin-bottom: 6px; }
-    .dz-text { font-size: 0.88rem; font-weight: 700; color: rgba(255,255,255,0.65); }
-    .dz-sub  { font-size: 0.72rem; color: var(--hint); margin-top: 4px; }
-
     /* ═══════════════════════════════════════════
        REVIEW SLIDE
     ═══════════════════════════════════════════ */
@@ -901,13 +884,13 @@
   </div>
 
   <!-- ─────────────────────────────────────────
-       SLIDE 8 ∙ PEMBAYARAN & UPLOAD
+       SLIDE 8 ∙ PEMBAYARAN
   ───────────────────────────────────────── -->
   <div class="slide state-below" id="slide-8">
     <div class="slide-inner">
       <div class="q-label"><span class="q-bubble" id="qb-8">8</span> →</div>
-      <h2 class="q-title">Pembayaran &amp; Upload Bukti 💳</h2>
-      <p class="q-sub">Transfer sesuai nominal tiket yang Anda pilih, lalu lampirkan bukti pembayaran.</p>
+      <h2 class="q-title">Pembayaran 💳</h2>
+      <p class="q-sub">Transfer sesuai nominal tiket yang Anda pilih.</p>
 
       <div class="pay-grid">
         <!-- Bank BCA -->
@@ -923,7 +906,7 @@
       </div>
 
       <!-- Nama pengirim -->
-      <div class="field-group">
+      <div class="field-group" style="margin-bottom:0;">
         <label class="field-label" for="sender_name">Nama Pengirim Transfer *</label>
         <input class="tf-input" type="text" id="sender_name"
                placeholder="Contoh: Rudi Pratama (sesuai mutasi rekening)"
@@ -931,16 +914,9 @@
         <div class="tf-err" id="err-sender">Nama pengirim transfer wajib diisi.</div>
       </div>
 
-      <!-- Upload -->
-      <div class="field-group" style="margin-bottom:0;">
-        <label class="field-label" style="margin-bottom:8px;">Upload Bukti Transfer *</label>
-        <div class="dropzone" id="dropzone">
-          <input type="file" id="file_input" accept="image/*,.pdf" />
-          <div class="dz-icon">📎</div>
-          <div class="dz-text" id="dz-text">Klik atau seret file bukti transfer ke sini</div>
-          <div class="dz-sub">JPG, PNG, atau PDF (Maks. 5 MB)</div>
-        </div>
-        <div class="g-err" id="err-file">Bukti pembayaran wajib dilampirkan.</div>
+      <div class="waiver-alert" style="margin-top:20px;">
+        <span>📎</span>
+        <span>Bukti transfer <strong>tidak diupload di form ini</strong>. Setelah data terkirim, Anda akan diarahkan mengirim foto bukti transfer langsung ke WhatsApp tim kami.</span>
       </div>
 
       <button class="ok-btn" data-next>OK <span class="enter-key">tekan Enter ↵</span></button>
@@ -988,15 +964,15 @@
       <h2 class="success-title">Pendaftaran Berhasil!</h2>
       <p class="success-desc">
         Terima kasih, <strong id="success-name">Sahabat Pancoran</strong>!<br />
-        Data dan bukti pembayaran Anda telah kami terima.<br />
-        Tim panitia akan memverifikasi dan menghubungi Anda via WhatsApp.<br />
+        Data pendaftaran Anda telah kami terima.<br />
+        <strong style="color:#fde68a;">Satu langkah lagi:</strong> kirim foto bukti transfer Anda lewat tombol WhatsApp di bawah agar pendaftaran bisa diverifikasi.<br />
         Ada pertanyaan? Hubungi Contact Person: <strong>0813 3728 031</strong>
       </p>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
-        <a href="https://wa.me/628133728031?text=Halo%20Panitia%20PSF%202026%2C%20saya%20sudah%20mengisi%20form%20pendaftaran"
+        <a href="#" id="wa-proof-link"
            target="_blank"
-           style="background:rgba(52,168,83,0.18);border:1px solid rgba(52,168,83,0.5);color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700;font-size:0.88rem;display:inline-flex;align-items:center;gap:6px;">
-          💬 Konfirmasi via WhatsApp
+           class="start-btn" style="text-decoration:none;">
+          📎 Kirim Bukti Transfer via WhatsApp
         </a>
         <button class="success-restart" onclick="location.reload()">Daftarkan Peserta Lain</button>
       </div>
@@ -1180,11 +1156,9 @@
       return ok;
     }
     if (slideId === 'slide-8') {
-      const sn   = document.getElementById('sender_name').value.trim();
-      const file = document.getElementById('file_input').files[0];
+      const sn = document.getElementById('sender_name').value.trim();
       setInputErr('sender_name', !sn); showErr('err-sender', !sn);
-      showErr('err-file', !file);
-      return sn && !!file;
+      return !!sn;
     }
     return true;
   }
@@ -1225,44 +1199,6 @@
     document.getElementById('rev-price').textContent    = tc ? fmt(tc.dataset.price) : 'Rp 0';
   }
 
-  /* ─── FILE UPLOAD ────────────────────────────── */
-  function fileToBase64(file) {
-    return new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload  = () => res(r.result.split(',')[1]);
-      r.onerror = rej;
-      r.readAsDataURL(file);
-    });
-  }
-
-  const fileInput = document.getElementById('file_input');
-  const dropzone  = document.getElementById('dropzone');
-  const dzText    = document.getElementById('dz-text');
-
-  fileInput.addEventListener('change', () => {
-    const f = fileInput.files[0];
-    if (!f) return;
-    if (f.size > 5 * 1024 * 1024) {
-      alert('File melebihi batas 5 MB!');
-      fileInput.value = '';
-      return;
-    }
-    dzText.textContent = '📄 ' + f.name + ' (' + (f.size / 1024).toFixed(0) + ' KB)';
-    showErr('err-file', false);
-  });
-  dropzone.addEventListener('dragover',  e => { e.preventDefault(); dropzone.classList.add('dragover'); });
-  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
-  dropzone.addEventListener('drop',      e => {
-    e.preventDefault(); dropzone.classList.remove('dragover');
-    const f = e.dataTransfer.files[0];
-    if (f) {
-      const dt = new DataTransfer(); dt.items.add(f);
-      fileInput.files = dt.files;
-      dzText.textContent = '📄 ' + f.name;
-      showErr('err-file', false);
-    }
-  });
-
   /* ─── SUBMIT ─────────────────────────────────── */
   async function submitRegistration() {
     const btn   = document.getElementById('submit-btn');
@@ -1270,9 +1206,7 @@
     btn.disabled = true;
     label.textContent = 'Mengirim data…';
 
-    const tc   = document.querySelector('input[name="ticket"]:checked');
-    const file = fileInput.files[0];
-    const b64  = file ? await fileToBase64(file) : '';
+    const tc = document.querySelector('input[name="ticket"]:checked');
 
     const payload = {
       fullname:   document.getElementById('fullname').value.trim(),
@@ -1287,9 +1221,6 @@
       price:      tc.dataset.price,
       tncAgreed:  document.getElementById('tnc-agree').checked,
       senderName: document.getElementById('sender_name').value.trim(),
-      fileName:   file ? file.name : '',
-      fileData:   b64,
-      fileType:   file ? file.type : '',
       timestamp:  new Date().toISOString()
     };
 
@@ -1303,6 +1234,13 @@
       document.getElementById('bottom-nav').classList.add('hidden');
       document.getElementById('progress-fill').style.width = '100%';
       document.getElementById('success-name').textContent = payload.fullname;
+
+      // Bukti transfer dikirim manual lewat WhatsApp (bukan upload di form)
+      const waMsg = 'Halo Panitia PSF 2026, saya ' + payload.fullname + ' (' + payload.nickname +
+        ') sudah mengisi form pendaftaran untuk kategori ' + payload.ticket +
+        ' (' + fmt(payload.price) + '). Berikut saya lampirkan foto bukti transfer saya.';
+      document.getElementById('wa-proof-link').href =
+        'https://wa.me/628133728031?text=' + encodeURIComponent(waMsg);
     } catch (err) {
       console.error(err);
       alert('Gagal mengirim data. Periksa koneksi dan coba lagi.');
